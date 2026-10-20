@@ -1,0 +1,212 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             BigInt    @id @default(autoincrement())
+  email          String    @unique
+  passwordHash   String    @map("password_hash")
+  displayName    String    @map("display_name")
+  role           String
+  parentUserId   BigInt?   @map("parent_user_id")
+  status         String    @default("ACTIVE")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  lastLogin      DateTime? @map("last_login")
+
+  parent         User?     @relation("UserHierarchy", fields: [parentUserId], references: [id])
+  subordinates   User[]    @relation("UserHierarchy")
+
+  ledgerAccounts LedgerAccount[]
+  walletAccounts WalletAccount[]
+  rechargeTransactions RechargeTransaction[]
+  walletFundingRequests WalletFundingRequest[]
+  notifications  Notification[]
+  auditEvents    AuditEvent[]
+
+  @@index([parentUserId], map: "idx_users_parent")
+  @@map("users")
+}
+
+model Provider {
+  id                 BigInt    @id @default(autoincrement())
+  code               String    @unique
+  displayName        String    @map("display_name")
+  enabled            Boolean   @default(false)
+  environment        String    @default("SANDBOX")
+  priority           Int       @default(100)
+  supportedServices  String[]  @default([]) @map("supported_services")
+  healthStatus       String    @default("UNKNOWN") @map("health_status")
+  config             Json      @default("{}")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  rechargeTransactions RechargeTransaction[]
+
+  @@map("providers")
+}
+
+model LedgerAccount {
+  id          BigInt    @id @default(autoincrement())
+  code        String?   @unique
+  ownerUserId BigInt?   @map("owner_user_id")
+  accountType String    @map("account_type")
+  currency    String    @default("INR") @db.Char(3)
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  ownerUser   User?     @relation(fields: [ownerUserId], references: [id])
+  walletAccount WalletAccount?
+  walletEntries WalletEntry[]
+  systemAccount SystemAccount?
+
+  @@map("ledger_accounts")
+}
+
+model WalletAccount {
+  id              BigInt    @id @default(autoincrement())
+  ownerUserId     BigInt    @map("owner_user_id")
+  ledgerAccountId BigInt    @unique @map("ledger_account_id")
+  currency        String    @default("INR") @db.Char(3)
+  status          String    @default("ACTIVE")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  ownerUser       User      @relation(fields: [ownerUserId], references: [id])
+  ledgerAccount   LedgerAccount @relation(fields: [ledgerAccountId], references: [id])
+
+  @@unique([ownerUserId, currency])
+  @@map("wallet_accounts")
+}
+
+model WalletJournal {
+  id             BigInt    @id @default(autoincrement())
+  transactionRef String?   @map("transaction_ref")
+  idempotencyKey String    @unique @map("idempotency_key")
+  entryType      String    @map("entry_type")
+  status         String    @default("POSTED")
+  description    String
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  entries        WalletEntry[]
+
+  @@map("wallet_journals")
+}
+
+model WalletEntry {
+  id        BigInt    @id @default(autoincrement())
+  journalId BigInt    @map("journal_id")
+  accountId BigInt    @map("account_id")
+  amount    Decimal   @db.Decimal(18, 2)
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  journal   WalletJournal @relation(fields: [journalId], references: [id])
+  account   LedgerAccount @relation(fields: [accountId], references: [id])
+
+  @@index([accountId, createdAt(sort: Desc)], map: "idx_wallet_entries_account")
+  @@index([journalId], map: "idx_wallet_entries_journal")
+  @@map("wallet_entries")
+}
+
+model RechargeTransaction {
+  id                BigInt    @id @default(autoincrement())
+  publicId          String    @unique @default(dbgenerated("gen_random_uuid()")) @map("public_id") @db.Uuid
+  clientUserId      BigInt    @map("client_user_id")
+  serviceType       String    @map("service_type")
+  target            String
+  amount            Decimal   @db.Decimal(12, 2)
+  currency          String    @default("INR") @db.Char(3)
+  providerId        BigInt?   @map("provider_id")
+  providerReference String?   @map("provider_reference")
+  idempotencyKey    String    @map("idempotency_key")
+  status            String    @default("PENDING")
+  failureCode       String?   @map("failure_code")
+  failureMessage    String?   @map("failure_message")
+  requestJson       Json      @default("{}") @map("request_json")
+  responseJson      Json      @default("{}") @map("response_json")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  clientUser        User      @relation(fields: [clientUserId], references: [id])
+  provider          Provider? @relation(fields: [providerId], references: [id])
+  notifications     Notification[]
+
+  @@unique([clientUserId, idempotencyKey])
+  @@index([createdAt(sort: Desc)], map: "idx_transactions_created")
+  @@index([clientUserId, createdAt(sort: Desc)], map: "idx_transactions_user_created")
+  @@index([status], map: "idx_transactions_status")
+  @@map("recharge_transactions")
+}
+
+model CommissionRule {
+  id              BigInt    @id @default(autoincrement())
+  serviceType     String    @map("service_type")
+  beneficiaryRole String    @map("beneficiary_role")
+  calculationType String    @map("calculation_type")
+  rate            Decimal   @db.Decimal(12, 4)
+  priority        Int       @default(100)
+  effectiveFrom   DateTime  @default(now()) @map("effective_from")
+  effectiveUntil  DateTime? @map("effective_until")
+  isActive        Boolean   @default(true) @map("is_active")
+
+  @@map("commission_rules")
+}
+
+model WalletFundingRequest {
+  id                BigInt    @id @default(autoincrement())
+  userId            BigInt    @map("user_id")
+  amount            Decimal   @db.Decimal(12, 2)
+  currency          String    @default("INR") @db.Char(3)
+  status            String    @default("PENDING")
+  paymentProvider   String?   @map("payment_provider")
+  providerReference String?   @map("provider_reference")
+  verifiedAt        DateTime? @map("verified_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  user              User      @relation(fields: [userId], references: [id])
+
+  @@map("wallet_funding_requests")
+}
+
+model Notification {
+  id            BigInt    @id @default(autoincrement())
+  userId        BigInt    @map("user_id")
+  type          String
+  message       String
+  transactionId BigInt?   @map("transaction_id")
+  readAt        DateTime? @map("read_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  user          User      @relation(fields: [userId], references: [id])
+  transaction   RechargeTransaction? @relation(fields: [transactionId], references: [id])
+
+  @@index([userId, createdAt(sort: Desc)], map: "idx_notifications_user")
+  @@map("notifications")
+}
+
+model AuditEvent {
+  id          BigInt    @id @default(autoincrement())
+  actorUserId BigInt?   @map("actor_user_id")
+  action      String
+  entityType  String    @map("entity_type")
+  entityId    String?   @map("entity_id")
+  details     Json      @default("{}")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  actorUser   User?     @relation(fields: [actorUserId], references: [id])
+
+  @@map("audit_events")
+}
+
+model SystemAccount {
+  id              BigInt    @id @default(autoincrement())
+  code            String    @unique
+  name            String
+  ledgerAccountId BigInt    @unique @map("ledger_account_id")
+
+  ledgerAccount   LedgerAccount @relation(fields: [ledgerAccountId], references: [id])
+
+  @@map("system_accounts")
+}

@@ -1,0 +1,42 @@
+.filters-row {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #dce3ed;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.filter-select {
+  width: 180px;
+  padding: 8px 12px;
+  border: 1px solid #dce3ed;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.font-bold {
+  font-weight: 600;
+}
+.service-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #edf2f7;
+  color: #4a5568;
+}
+.service-pill.mobile {
+  background: #e6f6ff;
+  color: #0070cb;
+}
+.service-pill.dth {
+  background: #fbf0ea;
+  color: #c05621;
+}
+.service-pill.bill_payment {
+  background: #f0fdf4;
+  color: #166534;
+}

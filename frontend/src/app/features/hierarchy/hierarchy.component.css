@@ -1,0 +1,72 @@
+.hierarchy-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px 0;
+}
+.tree-connector {
+  font-size: 20px;
+  color: #93a6c1;
+  margin: 8px 0;
+}
+.tree-node {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fafbfc;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 520px;
+}
+.node-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.node-badge.admin {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.node-badge.master {
+  background: #fef3c7;
+  color: #92400e;
+}
+.node-badge.dist {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+.node-badge.ret {
+  background: #dcfce7;
+  color: #166534;
+}
+.node-info strong {
+  display: block;
+  font-size: 14px;
+}
+.node-info small {
+  display: block;
+  font-size: 11px;
+  color: #7c8aa0;
+  margin-top: 2px;
+}
+.access-rules-summary {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-top: 24px;
+}
+.access-rules-summary h3 {
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+.access-rules-summary ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+  color: #4b5563;
+  line-height: 1.6;
+}

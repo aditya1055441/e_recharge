@@ -1,0 +1,151 @@
+<div class="page-container">
+  <div class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Prepaid Mobile Recharge</h2>
+        <p>Instant mobile top-up and live operator plans powered by Neropay</p>
+      </div>
+      <span class="pill">NEROPAY PLANS</span>
+    </div>
+
+    <div *ngIf="message()" class="alert-success">
+      {{ message() }}
+    </div>
+    <div *ngIf="error()" class="alert-error">
+      {{ error() }}
+    </div>
+
+    <form (ngSubmit)="openPaymentOptions()" class="recharge-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Select Operator</label>
+          <select [(ngModel)]="operator" name="operator" (change)="onOperatorOrCircleChange()">
+            <option value="JIO">Jio Prepaid (JIO)</option>
+            <option value="AIRTEL">Airtel Prepaid (AT)</option>
+            <option value="VI">Vodafone Idea (VI)</option>
+            <option value="BSNL">BSNL Prepaid (BSNL)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Circle / Region</label>
+          <select [(ngModel)]="circle" name="circle" (change)="onOperatorOrCircleChange()">
+            <option value="DELHI">Delhi & NCR</option>
+            <option value="MUMBAI">Mumbai</option>
+            <option value="KARNATAKA">Karnataka</option>
+            <option value="MAHARASHTRA">Maharashtra & Goa</option>
+            <option value="GUJARAT">Gujarat</option>
+            <option value="ALL">All India</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>10-Digit Mobile Number</label>
+          <input
+            type="tel"
+            name="mobile"
+            [(ngModel)]="mobile"
+            placeholder="e.g. 9876543210"
+            maxlength="10"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Recharge Amount (₹)</label>
+          <input
+            type="number"
+            name="amount"
+            [(ngModel)]="amount"
+            min="10"
+            step="1"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Quick Plans Selector -->
+      <div class="popular-plans">
+        <span class="plan-label">Quick Selection:</span>
+        <div class="plan-tags">
+          <button type="button" class="plan-btn" (click)="amount = '19'">₹19 (Data Sachet)</button>
+          <button type="button" class="plan-btn" (click)="amount = '239'">₹239 (1.5GB/day)</button>
+          <button type="button" class="plan-btn" (click)="amount = '299'">₹299 (2GB/day)</button>
+          <button type="button" class="plan-btn" (click)="amount = '666'">₹666 (84 Days)</button>
+          <button type="button" class="plan-btn" (click)="amount = '2999'">₹2999 (Annual)</button>
+        </div>
+      </div>
+
+      <button type="submit" class="primary" [disabled]="loading()">
+        {{ loading() ? 'Processing...' : 'Proceed to Recharge' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Operator Plans Explorer (Neropay) -->
+  <div class="panel plans-explorer">
+    <div class="panel-heading">
+      <div>
+        <h3>Browse {{ operator }} Plans for {{ circle }}</h3>
+        <p>Live operator tariff plans fetched via Neropay provider adapter</p>
+      </div>
+      <button type="button" class="secondary" (click)="loadPlans()">↻ Refresh Plans</button>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      <button
+        *ngFor="let cat of categories"
+        type="button"
+        class="cat-tab"
+        [class.active]="selectedCategory() === cat"
+        (click)="selectedCategory.set(cat)"
+      >
+        {{ cat }}
+      </button>
+    </div>
+
+    <div *ngIf="plansLoading()" class="loading-state">
+      Fetching operator plans from Neropay...
+    </div>
+
+    <div *ngIf="!plansLoading()" class="plans-grid">
+      <div
+        *ngFor="let plan of filteredPlans"
+        class="plan-card"
+        [class.selected]="amount === plan.amount.toString()"
+        (click)="selectPlan(plan)"
+      >
+        <div class="plan-card-header">
+          <span class="plan-price">₹{{ plan.amount }}</span>
+          <span class="validity-badge">{{ plan.validity }}</span>
+        </div>
+
+        <div class="plan-category">{{ plan.category }}</div>
+        <p class="plan-desc">{{ plan.description }}</p>
+
+        <div class="benefits-list" *ngIf="plan.benefits && plan.benefits.length > 0">
+          <span *ngFor="let benefit of plan.benefits" class="benefit-chip">
+            ✓ {{ benefit }}
+          </span>
+        </div>
+
+        <button type="button" class="select-plan-btn" [class.active]="amount === plan.amount.toString()">
+          {{ amount === plan.amount.toString() ? 'Selected' : 'Select Plan' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Selection Modal (Wallet vs Debit/Credit Card via Razorpay) -->
+<app-payment-modal
+  [isOpen]="isPaymentModalOpen()"
+  serviceType="MOBILE"
+  [operatorName]="operator"
+  [target]="mobile"
+  [amount]="amount"
+  (walletPay)="processWalletPayment()"
+  (cardPaySuccess)="onCardPaymentSuccess($event)"
+  (close)="isPaymentModalOpen.set(false)"
+></app-payment-modal>

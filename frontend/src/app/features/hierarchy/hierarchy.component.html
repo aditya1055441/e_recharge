@@ -1,0 +1,58 @@
+<div class="panel">
+  <div class="panel-heading">
+    <div>
+      <h2>Subordinate Hierarchy & Network</h2>
+      <p>Multi-level network governance (Master Distributor -> Distributor -> Retailer)</p>
+    </div>
+  </div>
+
+  <div class="hierarchy-tree">
+    <div class="tree-node root">
+      <div class="node-badge admin">ADMIN</div>
+      <div class="node-info">
+        <strong>Platform Administrator</strong>
+        <small>admin&#64;example.local · Global Governance</small>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓</div>
+
+    <div class="tree-node">
+      <div class="node-badge master">MASTER DISTRIBUTOR</div>
+      <div class="node-info">
+        <strong>North Region Master Distributor</strong>
+        <small>master&#64;example.local · Commission Pool: 2.5%</small>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓</div>
+
+    <div class="tree-node">
+      <div class="node-badge dist">DISTRIBUTOR</div>
+      <div class="node-info">
+        <strong>Delhi Metro Distributor</strong>
+        <small>distributor&#64;example.local · Commission: 1.8%</small>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓</div>
+
+    <div class="tree-node">
+      <div class="node-badge ret">RETAILER</div>
+      <div class="node-info">
+        <strong>Connaught Place Retailer Point</strong>
+        <small>retailer&#64;example.local · Point of Sale Active</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="access-rules-summary">
+    <h3>Enforced Access Control Rules</h3>
+    <ul>
+      <li>Master Distributors access only their assigned Distributors and Retailers.</li>
+      <li>Distributors access only their directly assigned Retailers.</li>
+      <li>Retailers cannot modify commissions, adjust wallets, or view upstream credentials.</li>
+      <li>Double-entry ledger balances cannot be directly edited via hierarchy views.</li>
+    </ul>
+  </div>
+</div>

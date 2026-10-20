@@ -1,0 +1,87 @@
+<div class="page-container">
+  <div class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Bharat Connect / BBPS Bill Payment</h2>
+        <p>Pay Electricity, Water, Gas, and Broadband bills</p>
+      </div>
+      <span class="pill">BHARAT CONNECT</span>
+    </div>
+
+    <div *ngIf="message()" class="alert-success">
+      {{ message() }}
+    </div>
+    <div *ngIf="error()" class="alert-error">
+      {{ error() }}
+    </div>
+
+    <form (ngSubmit)="openPaymentOptions()" class="recharge-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Bill Category</label>
+          <select [(ngModel)]="category" name="category">
+            <option value="ELECTRICITY">Electricity</option>
+            <option value="WATER">Water</option>
+            <option value="PIPED_GAS">Piped Gas</option>
+            <option value="BROADBAND">Broadband Postpaid</option>
+            <option value="FASTAG">FASTag Recharge</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Biller Name</label>
+          <select [(ngModel)]="biller" name="biller">
+            <option value="BSES_RAJDHANI">BSES Rajdhani Power Limited (Delhi)</option>
+            <option value="TATA_POWER">Tata Power - DDL</option>
+            <option value="MAHADISCOM">MSEDCL - Maharashtra State</option>
+            <option value="BESCOM">BESCOM - Bengaluru</option>
+            <option value="IGL">Indraprastha Gas Limited</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Consumer Number / CA Number</label>
+          <input
+            type="text"
+            name="consumerNo"
+            [(ngModel)]="consumerNo"
+            placeholder="e.g. 1009827364"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Bill Amount (₹)</label>
+          <input
+            type="number"
+            name="amount"
+            [(ngModel)]="amount"
+            min="1"
+            step="0.01"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="bbps-disclaimer">
+        <small>Integrated via Bharat Connect participant guidelines. Biller validation is simulated in dev environment.</small>
+      </div>
+
+      <button type="submit" class="primary" [disabled]="loading()">
+        {{ loading() ? 'Processing...' : 'Proceed to Pay Bill' }}
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Payment Selection Modal (Wallet vs Debit/Credit Card via Razorpay) -->
+<app-payment-modal
+  [isOpen]="isPaymentModalOpen()"
+  serviceType="BILL_PAYMENT"
+  [operatorName]="biller"
+  [target]="consumerNo"
+  [amount]="amount"
+  (walletPay)="processWalletPayment()"
+  (cardPaySuccess)="onCardPaymentSuccess($event)"
+  (close)="isPaymentModalOpen.set(false)"
+></app-payment-modal>

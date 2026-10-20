@@ -1,0 +1,114 @@
+<div class="page-container">
+  <div class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Direct-To-Home (DTH) Recharge</h2>
+        <p>Instant DTH subscriber account recharge with live operator packs via Neropay</p>
+      </div>
+      <span class="pill">NEROPAY DTH</span>
+    </div>
+
+    <div *ngIf="message()" class="alert-success">
+      {{ message() }}
+    </div>
+    <div *ngIf="error()" class="alert-error">
+      {{ error() }}
+    </div>
+
+    <form (ngSubmit)="openPaymentOptions()" class="recharge-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Select DTH Operator</label>
+          <select [(ngModel)]="operator" name="operator" (change)="onOperatorChange()">
+            <option value="TATAPLAY">Tata Play / Tata Sky (TTV)</option>
+            <option value="AIRTEL_DTH">Airtel Digital TV (ATV)</option>
+            <option value="DISH_TV">Dish TV (DTV)</option>
+            <option value="D2H">Videocon d2h (VTV)</option>
+            <option value="SUN_DIRECT">Sun Direct (STV)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Subscriber ID / Customer ID / Smart Card Number</label>
+          <input
+            type="text"
+            name="subscriberId"
+            [(ngModel)]="subscriberId"
+            placeholder="e.g. 1002938471"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Recharge Amount (₹)</label>
+          <input
+            type="number"
+            name="amount"
+            [(ngModel)]="amount"
+            min="50"
+            step="1"
+            required
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="primary" [disabled]="loading()">
+        {{ loading() ? 'Processing...' : 'Proceed to DTH Recharge' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- DTH Packs Explorer (Neropay) -->
+  <div class="panel plans-explorer">
+    <div class="panel-heading">
+      <div>
+        <h3>Available {{ operator }} Packs & Bouquets</h3>
+        <p>Curated monthly and long-term channel packs</p>
+      </div>
+      <button type="button" class="secondary" (click)="loadPlans()">↻ Refresh Packs</button>
+    </div>
+
+    <div *ngIf="plansLoading()" class="loading-state">
+      Loading DTH plans from Neropay...
+    </div>
+
+    <div *ngIf="!plansLoading()" class="plans-grid">
+      <div
+        *ngFor="let plan of plans()"
+        class="plan-card"
+        [class.selected]="amount === plan.amount.toString()"
+        (click)="selectPlan(plan)"
+      >
+        <div class="plan-card-header">
+          <span class="plan-price">₹{{ plan.amount }}</span>
+          <span class="validity-badge">{{ plan.validity }}</span>
+        </div>
+
+        <div class="plan-category">{{ plan.category }}</div>
+        <p class="plan-desc">{{ plan.description }}</p>
+
+        <div class="benefits-list" *ngIf="plan.benefits && plan.benefits.length > 0">
+          <span *ngFor="let benefit of plan.benefits" class="benefit-chip">
+            ✓ {{ benefit }}
+          </span>
+        </div>
+
+        <button type="button" class="select-plan-btn" [class.active]="amount === plan.amount.toString()">
+          {{ amount === plan.amount.toString() ? 'Selected' : 'Select Pack' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Selection Modal (Wallet vs Debit/Credit Card via Razorpay) -->
+<app-payment-modal
+  [isOpen]="isPaymentModalOpen()"
+  serviceType="DTH"
+  [operatorName]="operator"
+  [target]="subscriberId"
+  [amount]="amount"
+  (walletPay)="processWalletPayment()"
+  (cardPaySuccess)="onCardPaymentSuccess($event)"
+  (close)="isPaymentModalOpen.set(false)"
+></app-payment-modal>

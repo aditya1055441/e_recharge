@@ -1,0 +1,62 @@
+<div class="panel">
+  <div class="panel-heading">
+    <div>
+      <h2>Transaction History & Logs</h2>
+      <p>Searchable ledger transactions and status logs</p>
+    </div>
+    <div class="actions">
+      <button class="secondary" (click)="loadTransactions()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="filters-row">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Filter by Target, Reference or Service..."
+      class="search-input"
+    />
+    <select [(ngModel)]="statusFilter" class="filter-select">
+      <option value="ALL">All Statuses</option>
+      <option value="SUCCESS">Success</option>
+      <option value="PENDING">Pending / Processing</option>
+      <option value="FAILED">Failed</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Reference ID</th>
+          <th>Service</th>
+          <th>Target / Account</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of filteredTransactions()">
+          <td class="mono font-bold">{{ tx.public_id }}</td>
+          <td>
+            <span class="service-pill" [class]="tx.service_type.toLowerCase()">
+              {{ tx.service_type }}
+            </span>
+          </td>
+          <td>{{ tx.target }}</td>
+          <td><strong>₹{{ tx.amount }}</strong></td>
+          <td>
+            <span class="status" [class]="statusClass(tx.status)">
+              {{ tx.status }}
+            </span>
+          </td>
+          <td>{{ tx.created_at | date:'medium' }}</td>
+        </tr>
+        <tr *ngIf="filteredTransactions().length === 0">
+          <td colspan="6" class="empty">No matching transactions found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

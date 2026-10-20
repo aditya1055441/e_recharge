@@ -1,0 +1,133 @@
+<section class="metrics">
+  <article class="metric">
+    <div class="metric-top">
+      <span>Today's Transactions</span>
+      <span class="metric-icon blue">↗</span>
+    </div>
+    <strong>{{ totals()?.total ?? 0 }}</strong>
+    <small>Total processed requests</small>
+  </article>
+
+  <article class="metric">
+    <div class="metric-top">
+      <span>Success Rate</span>
+      <span class="metric-icon green">✓</span>
+    </div>
+    <strong>{{ successRate() }}%</strong>
+    <small>{{ totals()?.successful ?? 0 }} successful</small>
+  </article>
+
+  <article class="metric">
+    <div class="metric-top">
+      <span>Pending / Unknown</span>
+      <span class="metric-icon amber">◷</span>
+    </div>
+    <strong>{{ totals()?.pending ?? 0 }}</strong>
+    <small>Requires status query</small>
+  </article>
+
+  <article class="metric">
+    <div class="metric-top">
+      <span>Failed / Errors</span>
+      <span class="metric-icon red">!</span>
+    </div>
+    <strong>{{ totals()?.failed ?? 0 }}</strong>
+    <small>{{ totals()?.failed ?? 0 }} terminal failures</small>
+  </article>
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Quick Actions</h2>
+        <p>Perform instant operations</p>
+      </div>
+    </div>
+    <div class="action-grid">
+      <a routerLink="/mobile-recharge" class="action-card">
+        <span class="action-icon">📱</span>
+        <strong>Mobile Recharge</strong>
+        <small>Prepaid top-ups</small>
+      </a>
+      <a routerLink="/dth-recharge" class="action-card">
+        <span class="action-icon">📡</span>
+        <strong>DTH Recharge</strong>
+        <small>Direct-to-home plans</small>
+      </a>
+      <a routerLink="/bill-payment" class="action-card">
+        <span class="action-icon">💡</span>
+        <strong>Bill Payment</strong>
+        <small>Electricity, Gas, Water</small>
+      </a>
+      <a routerLink="/wallet" class="action-card">
+        <span class="action-icon">💳</span>
+        <strong>Ledger & Wallet</strong>
+        <small>Balance & Top-up</small>
+      </a>
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Platform Health & Routing</h2>
+        <p>Live provider engine status</p>
+      </div>
+      <span class="pill">ROUTER ACTIVE</span>
+    </div>
+    <div class="identity-row">
+      <span>Routing Circuit Breaker</span>
+      <strong class="healthy">CLOSED (Normal)</strong>
+    </div>
+    <div class="identity-row">
+      <span>Active Providers</span>
+      <strong>1 / 1 Configured (DEMO)</strong>
+    </div>
+    <div class="identity-row">
+      <span>Ledger Balancing Check</span>
+      <strong class="healthy">Zero-Sum Enforced</strong>
+    </div>
+    <div class="identity-row">
+      <span>Compliance Framework</span>
+      <strong>Bharat Connect / BBPS Ready</strong>
+    </div>
+  </article>
+</section>
+
+<section class="panel transactions">
+  <div class="panel-heading">
+    <div>
+      <h2>Live Transaction Monitor</h2>
+      <p>Real-time stream of platform transactions</p>
+    </div>
+    <button class="secondary" (click)="loadData()">↻ Refresh</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Reference</th>
+          <th>Service</th>
+          <th>Target</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tx of transactions()">
+          <td class="mono">{{ tx.public_id.slice(0, 8) }}</td>
+          <td>{{ tx.service_type }}</td>
+          <td>{{ tx.target }}</td>
+          <td>₹{{ tx.amount }}</td>
+          <td><span class="status" [class]="statusClass(tx.status)">{{ tx.status }}</span></td>
+          <td>{{ tx.created_at | date:'medium' }}</td>
+        </tr>
+        <tr *ngIf="transactions().length === 0">
+          <td colspan="6" class="empty">No recent transactions found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

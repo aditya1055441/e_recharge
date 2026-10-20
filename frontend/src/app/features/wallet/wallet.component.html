@@ -1,0 +1,71 @@
+<div class="page-container">
+  <div class="content-grid">
+    <article class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Wallet Balance & Ledger</h2>
+          <p>Double-entry accounting summary</p>
+        </div>
+        <span class="pill">ACTIVE ACCOUNT</span>
+      </div>
+
+      <div class="balance-card">
+        <span class="balance-label">Available Ledger Balance</span>
+        <div class="balance-amount">₹ 100,000.00</div>
+        <small class="balance-note">Zero-sum balance reconciled across journal entries.</small>
+      </div>
+
+      <div class="identity-row">
+        <span>Account Status</span>
+        <strong class="healthy">ACTIVE</strong>
+      </div>
+      <div class="identity-row">
+        <span>Currency</span>
+        <strong>INR (₹)</strong>
+      </div>
+      <div class="identity-row">
+        <span>Credit Facility</span>
+        <strong>Standard (Non-negative invariant)</strong>
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Request Wallet Funding</h2>
+          <p>Submit a funding deposit ticket</p>
+        </div>
+      </div>
+
+      <div *ngIf="message()" class="alert-info">
+        {{ message() }}
+      </div>
+      <div *ngIf="error()" class="alert-error">
+        {{ error() }}
+      </div>
+
+      <form (ngSubmit)="submitFundingRequest()">
+        <div class="form-group">
+          <label>Amount to Fund (₹)</label>
+          <input
+            type="number"
+            [(ngModel)]="amount"
+            name="amount"
+            min="100"
+            max="100000"
+            step="100"
+            required
+          />
+        </div>
+
+        <p class="funding-warning">
+          ⚠️ In accordance with RBI guidelines, customer wallet funding requires verified bank/gateway confirmation. This records an audited funding request.
+        </p>
+
+        <button type="submit" class="primary" [disabled]="loading()">
+          {{ loading() ? 'Submitting Request...' : 'Submit Funding Request' }}
+        </button>
+      </form>
+    </article>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="panel">
+  <div class="panel-heading">
+    <div>
+      <h2>API Provider Registry & Routing</h2>
+      <p>Multi-API routing, circuit breakers, and health monitoring</p>
+    </div>
+    <button class="secondary" (click)="loadProviders()">↻ Refresh</button>
+  </div>
+
+  <div class="routing-overview">
+    <div class="routing-card">
+      <span class="routing-label">Circuit Breaker</span>
+      <strong class="healthy">CLOSED (Normal Operations)</strong>
+      <small>Failsafe tripped when error rate exceeds threshold</small>
+    </div>
+    <div class="routing-card">
+      <span class="routing-label">Failover Policy</span>
+      <strong>Query First</strong>
+      <small>Never blindly resubmit on timeout to prevent double charges</small>
+    </div>
+    <div class="routing-card">
+      <span class="routing-label">Total Providers</span>
+      <strong>{{ providers().length }}</strong>
+      <small>Configured and prioritized adapters</small>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Provider Code</th>
+          <th>Display Name</th>
+          <th>Environment</th>
+          <th>Supported Services</th>
+          <th>Health Status</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of providers()">
+          <td><span class="priority-badge">#{{ p.priority }}</span></td>
+          <td class="mono font-bold">{{ p.code }}</td>
+          <td>{{ p.display_name }}</td>
+          <td><span class="env-tag">{{ p.environment }}</span></td>
+          <td>
+            <span *ngFor="let s of p.supported_services" class="service-tag">
+              {{ s }}
+            </span>
+          </td>
+          <td>
+            <span class="health-indicator" [class.healthy]="p.health_status === 'HEALTHY'">
+              ● {{ p.health_status }}
+            </span>
+          </td>
+          <td>
+            <span class="status" [class.status-success]="p.enabled">
+              {{ p.enabled ? 'ENABLED' : 'DISABLED' }}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="providers().length === 0">
+          <td colspan="7" class="empty">No providers configured.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

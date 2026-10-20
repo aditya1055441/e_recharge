@@ -1,0 +1,56 @@
+.routing-overview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 16px 0 24px;
+}
+.routing-card {
+  background: #fafbfc;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  padding: 16px;
+}
+.routing-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7c8aa0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 6px;
+}
+.priority-badge {
+  background: #e4e7eb;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.font-bold {
+  font-weight: 600;
+}
+.env-tag {
+  background: #e6f1ff;
+  color: #2365aa;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+.service-tag {
+  display: inline-block;
+  background: #f4f5f7;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  font-size: 10px;
+  padding: 2px 6px;
+  margin-right: 4px;
+}
+.health-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  color: #de350b;
+}
+.health-indicator.healthy {
+  color: #00875a;
+}

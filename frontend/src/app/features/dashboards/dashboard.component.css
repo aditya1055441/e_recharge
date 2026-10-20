@@ -1,0 +1,27 @@
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+.action-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #172b4d;
+  background: #fafbfc;
+  transition: all 0.2s;
+}
+.action-card:hover {
+  border-color: #2d76d2;
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+}
+.action-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}

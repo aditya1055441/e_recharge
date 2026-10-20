@@ -1,0 +1,142 @@
+.page-container {
+  max-width: 900px;
+}
+.recharge-form {
+  margin-top: 20px;
+}
+.alert-success {
+  background: #e3fcef;
+  border: 1px solid #abf5d1;
+  color: #006644;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-top: 16px;
+}
+.alert-error {
+  background: #ffebe6;
+  border: 1px solid #ffbdad;
+  color: #bf2600;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-top: 16px;
+}
+
+.plans-explorer {
+  margin-top: 24px;
+}
+
+.loading-state {
+  padding: 30px;
+  text-align: center;
+  color: #626f86;
+  font-size: 13px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.plan-card {
+  border: 1px solid #dcdfe4;
+  border-radius: 10px;
+  padding: 16px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.plan-card:hover {
+  border-color: #0c66e4;
+  box-shadow: 0 4px 12px rgba(12, 102, 228, 0.08);
+  transform: translateY(-2px);
+}
+
+.plan-card.selected {
+  border-color: #0c66e4;
+  background: #f1f7ff;
+  box-shadow: 0 0 0 2px #0c66e4;
+}
+
+.plan-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.plan-price {
+  font-size: 22px;
+  font-weight: 800;
+  color: #172b4d;
+}
+
+.validity-badge {
+  background: #e3fcef;
+  color: #006644;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.plan-category {
+  font-size: 11px;
+  font-weight: 700;
+  color: #626f86;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.plan-desc {
+  font-size: 12px;
+  color: #44546f;
+  line-height: 1.5;
+  margin: 0 0 12px;
+  flex: 1;
+}
+
+.benefits-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.benefit-chip {
+  background: #f7f8f9;
+  border: 1px solid #ebecf0;
+  color: #172b4d;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.select-plan-btn {
+  width: 100%;
+  padding: 8px 12px;
+  background: #f1f2f4;
+  border: 1px solid #dcdfe4;
+  color: #172b4d;
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.select-plan-btn.active,
+.plan-card:hover .select-plan-btn {
+  background: #0c66e4;
+  color: white;
+  border-color: #0c66e4;
+}

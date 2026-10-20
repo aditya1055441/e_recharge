@@ -1,0 +1,86 @@
+<div *ngIf="isOpen" class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="badge-icon">💳</span>
+        <div>
+          <h3>Choose Payment Method</h3>
+          <p class="subtitle">Complete your recharge securely</p>
+        </div>
+      </div>
+      <button type="button" class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="order-summary-box">
+      <div class="summary-row">
+        <span>Service:</span>
+        <strong>{{ serviceType }} {{ operatorName ? '(' + operatorName + ')' : '' }}</strong>
+      </div>
+      <div class="summary-row">
+        <span>Target Account:</span>
+        <strong class="mono">{{ target }}</strong>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total Payable:</span>
+        <span class="total-amount">₹{{ amount }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="error()" class="alert-error">
+      {{ error() }}
+    </div>
+
+    <div class="payment-options">
+      <!-- Option 1: Wallet Balance -->
+      <label class="payment-option" [class.selected]="selectedMethod === 'WALLET'">
+        <input
+          type="radio"
+          name="paymentMethod"
+          value="WALLET"
+          [(ngModel)]="selectedMethod"
+        />
+        <div class="option-details">
+          <div class="option-title-row">
+            <strong>RechargeOS Wallet</strong>
+            <span class="wallet-tag">Instant Debit</span>
+          </div>
+          <small>Pay instantly using your available double-entry wallet ledger balance.</small>
+        </div>
+      </label>
+
+      <!-- Option 2: Debit / Credit Card via Razorpay -->
+      <label class="payment-option" [class.selected]="selectedMethod === 'CARD'">
+        <input
+          type="radio"
+          name="paymentMethod"
+          value="CARD"
+          [(ngModel)]="selectedMethod"
+        />
+        <div class="option-details">
+          <div class="option-title-row">
+            <strong>Debit / Credit Card</strong>
+            <span class="rzp-tag">Razorpay Secure</span>
+          </div>
+          <small>Visa, MasterCard, RuPay, Maestro & International Cards.</small>
+        </div>
+      </label>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="secondary" (click)="closeModal()" [disabled]="loading()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="primary pay-btn"
+        (click)="confirmPayment()"
+        [disabled]="loading()"
+      >
+        <span *ngIf="!loading()">
+          Pay ₹{{ amount }} with {{ selectedMethod === 'WALLET' ? 'Wallet' : 'Debit/Credit Card' }}
+        </span>
+        <span *ngIf="loading()">Processing Payment...</span>
+      </button>
+    </div>
+  </div>
+</div>

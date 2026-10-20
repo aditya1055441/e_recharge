@@ -1,0 +1,75 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">R</div>
+      <div>
+        <strong>RechargeOS</strong>
+        <small>CONTROL CENTER</small>
+      </div>
+    </div>
+
+    <div class="nav-label">WORKSPACE</div>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav">
+      ▦ &nbsp; Overview
+    </a>
+    <a *ngIf="canAccess(['RETAILER', 'DISTRIBUTOR', 'ADMIN'])" routerLink="/mobile-recharge" routerLinkActive="active" class="nav">
+      ↗ &nbsp; Mobile Recharge
+    </a>
+    <a *ngIf="canAccess(['RETAILER', 'DISTRIBUTOR', 'ADMIN'])" routerLink="/dth-recharge" routerLinkActive="active" class="nav">
+      ◉ &nbsp; DTH Recharge
+    </a>
+    <a *ngIf="canAccess(['RETAILER', 'DISTRIBUTOR', 'ADMIN'])" routerLink="/bill-payment" routerLinkActive="active" class="nav">
+      ▤ &nbsp; Bill Payments
+    </a>
+    <a routerLink="/transactions" routerLinkActive="active" class="nav">
+      ◫ &nbsp; Transactions
+    </a>
+
+    <div class="nav-label">MANAGEMENT</div>
+    <a *ngIf="canAccess(['ADMIN', 'MASTER_DISTRIBUTOR', 'DISTRIBUTOR'])" routerLink="/hierarchy" routerLinkActive="active" class="nav">
+      ♙ &nbsp; Hierarchy
+    </a>
+    <a routerLink="/wallet" routerLinkActive="active" class="nav">
+      ⇄ &nbsp; Wallet & Ledger
+    </a>
+    <a *ngIf="canAccess(['ADMIN', 'API_MANAGER'])" routerLink="/api-manager" routerLinkActive="active" class="nav">
+      ⌘ &nbsp; API Manager
+    </a>
+
+    <div class="sidebar-bottom">
+      <span class="dot"></span> Local Demo Environment
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PLATFORM / {{ role() }}</div>
+        <h1>{{ title() }}</h1>
+      </div>
+      <div class="top-actions">
+        <span class="env">LOCAL DEMO</span>
+        <div class="avatar">{{ userInitials() }}</div>
+        <div>
+          <strong>{{ currentUser()?.displayName || 'User' }}</strong>
+          <small>{{ role() }}</small>
+        </div>
+        <button class="secondary" (click)="logout()">Sign out</button>
+      </div>
+    </header>
+
+    <section class="notice">
+      <span class="notice-icon">i</span>
+      <div>
+        <strong>Development Environment</strong>
+        <p>Transactions use simulated provider routing with double-entry ledger posting.</p>
+      </div>
+    </section>
+
+    <router-outlet></router-outlet>
+
+    <footer>
+      RechargeOS · Multi-tier Digital Recharge & Bill Payment Platform · Security and Compliance Checked
+    </footer>
+  </main>
+</div>

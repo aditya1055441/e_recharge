@@ -1,0 +1,150 @@
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f7fb;
+  padding: 20px;
+}
+.login-box {
+  width: 100%;
+  max-width: 440px;
+}
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.brand-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #2d76d2;
+  color: white;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+.login-card-body {
+  background: white;
+  border: 1px solid #dce3ed;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.google-btn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.google-icon {
+  flex-shrink: 0;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e5e7eb;
+}
+.divider span {
+  padding: 0 12px;
+  font-size: 12px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3e4b5b;
+  margin-bottom: 6px;
+}
+.w-100 {
+  width: 100%;
+  box-sizing: border-box;
+}
+.alert-error {
+  background: #ffebe6;
+  border: 1px solid #ffbdad;
+  color: #bf2600;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.quick-roles {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px dashed #dce3ed;
+}
+.quick-title {
+  display: block;
+  font-size: 11px;
+  color: #8290a5;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.role-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag-btn {
+  background: #eef2f7;
+  border: 1px solid #d0d7e2;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #334455;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tag-btn:hover {
+  background: #2d76d2;
+  color: white;
+  border-color: #2d76d2;
+}
+.tag-btn.google-tag {
+  background: #e8f0fe;
+  color: #1967d2;
+  border-color: #c2d7fa;
+}
+.tag-btn.google-tag:hover {
+  background: #1967d2;
+  color: white;
+}

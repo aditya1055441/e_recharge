@@ -12,7 +12,7 @@
 }
 .login-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .brand-badge {
   width: 48px;
@@ -27,6 +27,34 @@
   justify-content: center;
   margin: 0 auto 12px;
 }
+
+.auth-tabs {
+  display: flex;
+  background: #e4e7eb;
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: #626f86;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-tab.active {
+  background: #ffffff;
+  color: #0c66e4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .login-card-body {
   background: white;
   border: 1px solid #dce3ed;
@@ -34,6 +62,7 @@
   padding: 32px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 .google-btn {
   display: flex;
   align-items: center;
@@ -83,6 +112,10 @@
   width: 100%;
   box-sizing: border-box;
   display: block;
+  padding: 9px 12px;
+  border: 1px solid #dce3ed;
+  border-radius: 6px;
+  font-size: 14px;
 }
 .form-group label {
   display: block;
@@ -95,6 +128,14 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.hint-text {
+  display: block;
+  font-size: 11px;
+  color: #626f86;
+  margin-top: 5px;
+}
+
 .alert-error {
   background: #ffebe6;
   border: 1px solid #ffbdad;
@@ -104,6 +145,121 @@
   font-size: 13px;
   margin-bottom: 16px;
 }
+
+.alert-success {
+  background: #e3fcef;
+  border: 1px solid #abf5d1;
+  color: #006644;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.switch-mode-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #626f86;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #0c66e4;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  font-size: 13px;
+}
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.method-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.method-btn {
+  padding: 8px 12px;
+  border: 1px solid #dcdfe4;
+  background: #f7f8f9;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #44546f;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.method-btn:hover {
+  border-color: #0c66e4;
+  background: #f1f7ff;
+}
+
+.method-btn.active {
+  border-color: #0c66e4;
+  background: #e9f2ff;
+  color: #0c66e4;
+}
+
+.verify-header {
+  margin-bottom: 16px;
+}
+
+.verify-header p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #44546f;
+}
+
+.step-badge {
+  display: inline-block;
+  background: #deebff;
+  color: #0747a6;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.step-badge.success-badge {
+  background: #e3fcef;
+  color: #006644;
+}
+
+.code-input {
+  font-family: monospace;
+  font-size: 20px !important;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+.resend-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.text-link {
+  background: none;
+  border: none;
+  color: #0c66e4;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+.text-link:hover {
+  text-decoration: underline;
+}
+
 .quick-roles {
   margin-top: 24px;
   padding-top: 18px;

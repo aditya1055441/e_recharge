@@ -8,10 +8,15 @@ class RazorpayService {
   private keySecret: string;
 
   constructor() {
-    this.keyId = process.env.RAZORPAY_KEY_ID;
-    this.keySecret = process.env.RAZORPAY_KEY_SECRET;
+    this.keyId = process.env.RAZORPAY_KEY_ID || "rzp_test_placeholder_key";
+    this.keySecret = process.env.RAZORPAY_KEY_SECRET || "rzp_test_placeholder_secret";
 
-    if (this.keyId && this.keySecret) {
+    if (
+      this.keyId &&
+      this.keyId !== "rzp_test_placeholder_key" &&
+      this.keySecret &&
+      this.keySecret !== "rzp_test_placeholder_secret"
+    ) {
       this.client = new Razorpay({
         key_id: this.keyId,
         key_secret: this.keySecret

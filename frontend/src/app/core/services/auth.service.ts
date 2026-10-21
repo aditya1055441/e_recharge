@@ -42,6 +42,36 @@ export class AuthService {
     );
   }
 
+  sendRegistrationCode(identifier: string): Observable<{ success: boolean; message: string; isEmail: boolean; debugCode?: string }> {
+    return this.http.post<{ success: boolean; message: string; isEmail: boolean; debugCode?: string }>(
+      `${this.apiUrl}/auth/register/send-code`,
+      { identifier }
+    );
+  }
+
+  verifyRegistrationCode(identifier: string, code: string): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      `${this.apiUrl}/auth/register/verify-code`,
+      { identifier, code }
+    );
+  }
+
+  completeRegistration(data: {
+    identifier: string;
+    code: string;
+    name: string;
+    password: string;
+  }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register/complete`, data).pipe(
+      tap(res => {
+        this.tokenSignal.set(res.accessToken);
+        this.userSignal.set(res.user);
+        localStorage.setItem(this.tokenKey, res.accessToken);
+        localStorage.setItem(this.userKey, JSON.stringify(res.user));
+      })
+    );
+  }
+
   loginWithGoogle(data: { idToken?: string; tokenId?: string; email?: string; name?: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/google`, data).pipe(
       tap(res => {
